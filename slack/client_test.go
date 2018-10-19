@@ -14,6 +14,8 @@ import (
 	. "github.com/catatsuy/notify_slack/slack"
 )
 
+var slackFilesUploadURL string
+
 func TestNewClient_badURL(t *testing.T) {
 	_, err := NewClient("", nil)
 	if err == nil {
@@ -350,5 +352,13 @@ func TestPostFile_FailNotJSON(t *testing.T) {
 	expected := `response returned from slack is not json`
 	if !strings.Contains(err.Error(), expected) {
 		t.Fatalf("expected %q to contain %q", err.Error(), expected)
+	}
+}
+
+func SetSlackFilesUploadURL(u string) (resetFunc func()) {
+	var tmp string
+	tmp, slackFilesUploadURL = slackFilesUploadURL, u
+	return func() {
+		slackFilesUploadURL = tmp
 	}
 }
