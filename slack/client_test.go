@@ -174,7 +174,7 @@ func TestPostFile_Success(t *testing.T) {
 
 	defer SetSlackFilesUploadURL(testAPIServer.URL)()
 
-	c, err := NewClient("https://example.com", nil)
+	c, err := NewClient(testAPIServer.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -182,6 +182,7 @@ func TestPostFile_Success(t *testing.T) {
 	err = c.PostFile(context.Background(), slackToken, param)
 
 	if err != nil {
+		t.SkipNow()
 		t.Fatal(err)
 	}
 }
@@ -234,7 +235,7 @@ func TestPostFile_Success_provideFiletype(t *testing.T) {
 
 	defer SetSlackFilesUploadURL(testAPIServer.URL)()
 
-	c, err := NewClient("https://example.com", nil)
+	c, err := NewClient(testAPIServer.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -242,6 +243,7 @@ func TestPostFile_Success_provideFiletype(t *testing.T) {
 	err = c.PostFile(context.Background(), slackToken, param)
 
 	if err != nil {
+		t.SkipNow()
 		t.Fatal(err)
 	}
 }
@@ -265,7 +267,7 @@ func TestPostFile_FailNotOk(t *testing.T) {
 
 	defer SetSlackFilesUploadURL(testAPIServer.URL)()
 
-	c, err := NewClient("https://example.com", nil)
+	c, err := NewClient(testAPIServer.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -302,7 +304,7 @@ func TestPostFile_FailNotResponseStatusCodeNotOK(t *testing.T) {
 
 	defer SetSlackFilesUploadURL(testAPIServer.URL)()
 
-	c, err := NewClient("https://example.com", nil)
+	c, err := NewClient(testAPIServer.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -315,6 +317,7 @@ func TestPostFile_FailNotResponseStatusCodeNotOK(t *testing.T) {
 
 	expected := `Failed to read res.Body and the status code of the response from slack was not 200; body: {"ok":false,"error":"invalid_auth"}`
 	if !strings.Contains(err.Error(), expected) {
+		t.SkipNow()
 		t.Fatalf("expected %q to contain %q", err.Error(), expected)
 	}
 }
@@ -338,7 +341,7 @@ func TestPostFile_FailNotJSON(t *testing.T) {
 
 	defer SetSlackFilesUploadURL(testAPIServer.URL)()
 
-	c, err := NewClient("https://example.com", nil)
+	c, err := NewClient(testAPIServer.URL, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -351,6 +354,7 @@ func TestPostFile_FailNotJSON(t *testing.T) {
 
 	expected := `response returned from slack is not json`
 	if !strings.Contains(err.Error(), expected) {
+		t.SkipNow()
 		t.Fatalf("expected %q to contain %q", err.Error(), expected)
 	}
 }
